@@ -1,36 +1,39 @@
-import { SITE } from "@config";
-import { glob } from "astro/loaders";
-import { defineCollection, z } from "astro:content";
+// 1. Import utilities from `astro:content`
+import { z, defineCollection } from 'astro:content';
 
-const blog = defineCollection({
-  type: "content_layer",
-  loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
-  schema: ({ image }) =>
-    z.object({
-      author: z.string().default(SITE.author),
-      pubDatetime: z.date(),
-      modDatetime: z.date().optional().nullable(),
-      title: z.string(),
-      featured: z.boolean().optional(),
-      draft: z.boolean().optional(),
-      tags: z.array(z.string()).default(["others"]),
-      ogImage: image()
-        .refine(img => img.width >= 1200 && img.height >= 630, {
-          message: "OpenGraph image must be at least 1200 X 630 pixels!",
-        })
-        .or(z.string())
-        .optional(),
-      description: z.string(),
-      canonicalURL: z.string().optional(),
-      editPost: z
-        .object({
-          disabled: z.boolean().optional(),
-          url: z.string().optional(),
-          text: z.string().optional(),
-          appendFilePath: z.boolean().optional(),
-        })
-        .optional(),
+// 2. Define your collection(s)
+const blogCollection = defineCollection({
+  schema: z.object({
+    draft: z.boolean(),
+    title: z.string(),
+    snippet: z.string(),
+    image: z.object({
+      src: z.string(),
+      alt: z.string(),
     }),
+    publishDate: z.string().transform(str => new Date(str)),
+    author: z.string().default('Astroship'),
+    category: z.string(),
+    tags: z.array(z.string()),
+  }),
 });
 
-export const collections = { blog };
+const teamCollection = defineCollection({
+  schema: z.object({
+    draft: z.boolean(),
+    name: z.string(),
+    title: z.string(),
+    avatar: z.object({
+      src: z.string(),
+      alt: z.string(),
+    }),
+    publishDate: z.string().transform(str => new Date(str)),
+  }),
+});
+
+// 3. Export a single `collections` object to register your collection(s)
+//    This key should match your collection directory name in "src/content"
+export const collections = {
+  'blog': blogCollection,
+  'team': teamCollection,
+};
