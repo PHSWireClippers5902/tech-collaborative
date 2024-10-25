@@ -1,3 +1,12 @@
+# Tech Collaborative Main Site
+
+Yep, that's right. We run the website for our non-profit partner. 
+
+## Contributing
+If you're going to put something in this repo, push it to main. Release is our live website (so don't push unless we've checked to make sure it doesn't bug out). 
+
+--- insert divider here (i forget how to do markdown -lex) ---
+
 # Astroship - Astro SAAS Starter Website Template
 
 Astroship is a free starter astro website template for saas, startups, marketing websites, landing pages & blogs. Built with Astro & TailwindCSS.
